@@ -32,6 +32,16 @@ return view.extend({
 		    hosts = data[2],
 		    m, s, o;
 
+		// Add hosts from etherwake config
+		uci.sections('etherwake', 'target', function(section) {
+			if (section.mac && section.name) {
+				// Create a host entry if it doesn't exist
+				if (!hosts[section.mac]) {
+					hosts[section.mac] = { name: section.name };
+				}
+			}
+		});
+
 		this.formdata.has_ewk = has_ewk;
 		this.formdata.has_wol = has_wol;
 
